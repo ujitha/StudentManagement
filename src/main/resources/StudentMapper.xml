@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.nanasa.org.mappers.StudentMapper">
+    <select id="getStudentById" parameterType="int" resultType="com.nanasa.org.models.Student">
+      SELECT
+      id,
+      student_name as name,
+      address,
+      joined_date as joinDate,
+      mobile as mobileNumber
+      FROM student
+      WHERE id= #{studentId}
+    </select>
+    <resultMap id="StudentResult" type="Student">
+        <id property="id" column="id"/>
+        <result property="name" column="student_name"/>
+        <result property="address" column="address"/>
+        <result property="joinDate" column="joined_date"/>
+        <result property="mobileNumber" column="mobile"/>
+    </resultMap>
+
+    <select id="getAllStudents" resultMap="StudentResult">
+        SELECT * FROM student
+    </select>
+
+    <insert id="insertStudent" parameterType="Student" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO student(student_name, address, joined_date, mobile)
+        VALUES (#{name}, #{address}, #{joinDate}, #{mobileNumber})
+    </insert>
+
+    <delete id="deleteStudent" parameterType="int">
+        DELETE FROM student WHERE id = #{studentId}
+    </delete>
+
+    <update id="updateStudent" parameterType="Student">
+        UPDATE student
+        SET
+        student_name = #{name},
+        address = #{address},
+        joined_date = #{joinDate},
+        mobile = #{mobileNumber}
+        WHERE id = #{id}
+    </update>
+</mapper>
